@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Chat Isolation Test</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #333;
+      margin-bottom: 10px;
+    }
+    .subtitle {
+      color: #666;
+      margin-bottom: 30px;
+    }
+    .section {
+      margin-bottom: 30px;
+      padding: 20px;
+      background: #f9f9f9;
+      border-radius: 8px;
+      border-left: 4px solid #4CAF50;
+    }
+    .section h2 {
+      margin-top: 0;
+      color: #4CAF50;
+      font-size: 18px;
+    }
+    .info {
+      margin: 10px 0;
+      padding: 10px;
+      background: white;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+    }
+    .label {
+      font-weight: bold;
+      color: #555;
+    }
+    .value {
+      color: #2196F3;
+    }
+    button {
+      background: #f44336;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      margin-top: 10px;
+    }
+    button:hover {
+      background: #d32f2f;
+    }
+    .storage-list {
+      max-height: 300px;
+      overflow-y: auto;
+      background: white;
+      padding: 15px;
+      border-radius: 4px;
+      margin-top: 10px;
+    }
+    .storage-item {
+      padding: 8px;
+      margin: 5px 0;
+      background: #e3f2fd;
+      border-radius: 4px;
+      font-size: 13px;
+      word-break: break-all;
+    }
+    .key {
+      font-weight: bold;
+      color: #1976D2;
+    }
+    .success {
+      color: #4CAF50;
+      font-weight: bold;
+    }
+    .warning {
+      color: #FF9800;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔒 User Chat Isolation Test</h1>
+    <p class="subtitle">This page shows how chat data is isolated per user email</p>
+
+    <div class="section">
+      <h2>📧 Current User</h2>
+      <div class="info">
+        <span class="label">Email:</span> 
+        <span class="value" id="currentEmail">Not logged in</span>
+      </div>
+      <div class="info">
+        <span class="label">Status:</span> 
+        <span class="value" id="loginStatus">❌ Not logged in</span>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>💾 User-Specific Storage Keys</h2>
+      <div class="info">
+        <span class="label">Chats Key:</span> 
+        <span class="value" id="chatsKey">-</span>
+      </div>
+      <div class="info">
+        <span class="label">Group Chats Key:</span> 
+        <span class="value" id="groupChatsKey">-</span>
+      </div>
+      <div class="info">
+        <span class="label">Number of Chats:</span> 
+        <span class="value" id="chatCount">0</span>
+      </div>
+      <div class="info">
+        <span class="label">Number of Group Chats:</span> 
+        <span class="value" id="groupChatCount">0</span>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>🗂️ All Chat Data in LocalStorage</h2>
+      <p style="font-size: 13px; color: #666;">
+        This shows ALL chat data for ALL users. Each user's data should have their email in the key.
+      </p>
+      <div class="storage-list" id="storageList">
+        Loading...
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>✅ Verification</h2>
+      <div id="verification">
+        <p>Checking isolation...</p>
+      </div>
+    </div>
+
+    <button onclick="clearAllChatData()">🗑️ Clear ALL Chat Data (All Users)</button>
+  </div>
+
+  <script>
+    function getCurrentUserEmail() {
+      return localStorage.getItem("userEmail") || null;
+    }
+
+    function getUserStorageKey(baseKey) {
+      const email = getCurrentUserEmail();
+      return email ? `${baseKey}_${email}` : baseKey;
+    }
+
+    function updateDisplay() {
+      const email = getCurrentUserEmail();
+      
+      // Update current user info
+      document.getElementById("currentEmail").textContent = email || "Not logged in";
+      document.getElementById("loginStatus").textContent = email ? "✅ Logged in" : "❌ Not logged in";
+
+      if (email) {
+        // Update storage keys
+        const chatsKey = getUserStorageKey("chats");
+        const groupChatsKey = getUserStorageKey("groupChats");
+        
+        document.getElementById("chatsKey").textContent = chatsKey;
+        document.getElementById("groupChatsKey").textContent = groupChatsKey;
+
+        // Get chat counts
+        const chats = JSON.parse(localStorage.getItem(chatsKey)) || [];
+        const groupChats = JSON.parse(localStorage.getItem(groupChatsKey)) || [];
+        
+        document.getElementById("chatCount").textContent = chats.length;
+        document.getElementById("groupChatCount").textContent = groupChats.length;
+      } else {
+        document.getElementById("chatsKey").textContent = "-";
+        document.getElementById("groupChatsKey").textContent = "-";
+        document.getElementById("chatCount").textContent = "0";
+        document.getElementById("groupChatCount").textContent = "0";
+      }
+
+      // Show all chat-related storage
+      displayAllChatStorage();
+      
+      // Verify isolation
+      verifyIsolation();
+    }
+
+    function displayAllChatStorage() {
+      const storageList = document.getElementById("storageList");
+      storageList.innerHTML = "";
+
+      let foundAny = false;
+
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && (key.startsWith('chats_') || key.startsWith('groupChats_'))) {
+          foundAny = true;
+          const value = localStorage.getItem(key);
+          const data = JSON.parse(value);
+          
+          const item = document.createElement("div");
+          item.className = "storage-item";
+          item.innerHTML = `
+            <div class="key">${key}</div>
+            <div style="margin-top: 5px; color: #666;">
+              ${Array.isArray(data) ? `${data.length} items` : 'Invalid data'}
+            </div>
+          `;
+          storageList.appendChild(item);
+        }
+      }
+
+      if (!foundAny) {
+        storageList.innerHTML = '<p style="color: #999; text-align: center;">No chat data found</p>';
+      }
+    }
+
+    function verifyIsolation() {
+      const verificationDiv = document.getElementById("verification");
+      const email = getCurrentUserEmail();
+
+      if (!email) {
+        verificationDiv.innerHTML = '<p class="warning">⚠️ Please log in to verify isolation</p>';
+        return;
+      }
+
+      // Check if there are any chat keys without email suffix
+      let hasNonIsolatedKeys = false;
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key === 'chats' || key === 'groupChats') {
+          hasNonIsolatedKeys = true;
+          break;
+        }
+      }
+
+      // Check if current user's keys exist
+      const currentUserChatsKey = getUserStorageKey("chats");
+      const currentUserGroupChatsKey = getUserStorageKey("groupChats");
+
+      if (hasNonIsolatedKeys) {
+        verificationDiv.innerHTML = `
+          <p class="warning">⚠️ WARNING: Found non-isolated chat keys!</p>
+          <p style="font-size: 13px;">Keys like "chats" or "groupChats" without email suffix were found. This means data is not properly isolated.</p>
+        `;
+      } else {
+        verificationDiv.innerHTML = `
+          <p class="success">✅ Chat isolation is working correctly!</p>
+          <p style="font-size: 13px; color: #666;">
+            All chat data is stored with user-specific keys (e.g., chats_${email}).
+            Each user will only see their own chat history.
+          </p>
+        `;
+      }
+    }
+
+    function clearAllChatData() {
+      if (!confirm("This will delete ALL chat data for ALL users. Are you sure?")) {
+        return;
+      }
+
+      const keysToRemove = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && (key.startsWith('chats_') || key.startsWith('groupChats_') || key === 'chats' || key === 'groupChats')) {
+          keysToRemove.push(key);
+        }
+      }
+
+      keysToRemove.forEach(key => localStorage.removeItem(key));
+      
+      alert(`Cleared ${keysToRemove.length} chat storage keys`);
+      updateDisplay();
+    }
+
+    // Update display on load
+    updateDisplay();
+
+    // Refresh every 2 seconds to catch changes
+    setInterval(updateDisplay, 2000);
+  </script>
+</body>
+</html>

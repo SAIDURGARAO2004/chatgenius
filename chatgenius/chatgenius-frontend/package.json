@@ -1,0 +1,17 @@
+{
+    "name": "chatgenius-frontend",
+    "version": "1.0.0",
+    "description": "ChatGenius Frontend - Wrapper for React app",
+    "scripts": {
+        "dev": "cd chatgenius-react && npm run dev",
+        "build": "cd chatgenius-react && npm run build",
+        "preview": "cd chatgenius-react && npm run preview",
+        "install-deps": "cd chatgenius-react && npm install"
+    },
+    "private": true,
+    "dependencies": {
+        "react-markdown": "^10.1.0",
+        "rehype-raw": "^7.0.0",
+        "remark-gfm": "^4.0.1"
+    }
+}

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create Account | ChatGenius</title>
+
+  <!-- Auth Styles -->
+  <link rel="stylesheet" href="css/auth.css">
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Registration Card -->
+  <form id="registerForm" autocomplete="off">
+
+    <h2>Create Account</h2>
+
+    <!-- Full Name -->
+    <input
+      type="text"
+      id="name"
+      placeholder="Full Name"
+      autocomplete="off"
+      required
+    />
+    <input
+  type="email"
+  id="email"
+  placeholder="Email Address"
+  required
+/>
+
+<p id="emailError" style="color:red;font-size:14px;margin-top:6px;"></p>
+
+
+
+    <!-- Password -->
+    <div class="password-wrapper">
+      <input
+        type="password"
+        id="password"
+        placeholder="Password"
+        
+        required
+      />
+      <span class="toggle-password" data-target="password">👁️</span>
+    </div>
+
+    <!-- Confirm Password -->
+    <div class="password-wrapper">
+      <input
+        type="password"
+        id="confirmPassword"
+        placeholder="Re-enter Password"
+        required
+      />
+      <span class="toggle-password" data-target="confirmPassword">👁️</span>
+    </div>
+    <p id="emailError" style="color:red;font-size:14px;"></p>
+<p id="passwordError" style="color:red;font-size:14px;"></p>
+
+    <!-- Submit -->
+    <button type="submit">Register</button>
+
+    <!-- Footer -->
+    <div class="auth-footer">
+      Already have an account?
+      <a href="login.html">Login</a>
+    </div>
+
+  </form>
+
+  <!-- Scripts -->
+  <script src="js/config.js"></script>
+  <script src="js/auth.js"></script>
+
+
+
+
+</body>
+</html>

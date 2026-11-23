@@ -1,0 +1,71 @@
+.year-review-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg, #ffffff);
+}
+
+.year-review-card {
+  width: 80%;
+  max-width: 900px;
+  background: #fff;
+  border-radius: 28px;
+  display: flex;
+  align-items: center;
+  padding: 40px;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.12);
+}
+
+.theme-dark .year-review-card {
+  background: #1e1e1e;
+  color: #fff;
+}
+
+.year-circle {
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff8a00, #e52e71, #6a5cff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  font-weight: bold;
+  color: white;
+}
+
+.year-content {
+  margin-left: 40px;
+}
+
+.year-content h2 {
+  font-size: 26px;
+  margin-bottom: 10px;
+}
+
+.year-content p {
+  opacity: 0.8;
+  margin-bottom: 24px;
+}
+
+.year-btn {
+  padding: 12px 28px;
+  border-radius: 30px;
+  border: none;
+  background: #fff;
+  color: #000;
+  font-size: 16px;
+  cursor: pointer;
+  border: 1px solid #ddd;
+}
+
+.theme-dark .year-btn {
+  background: #2a2a2a;
+  color: #fff;
+  border: 1px solid #444;
+}
+
+.year-btn:hover {
+  transform: translateY(-1px);
+}

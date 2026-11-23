@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Test Group Chat Button</title>
+    <style>
+        .group-chat-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.55);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
+        }
+
+        .group-chat-card {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            max-width: 500px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Test Group Chat Modal</h1>
+    <button onclick="openGroupChat()">👥 Open Group Chat Modal</button>
+
+    <!-- Modal -->
+    <div id="startGroupChatModal" class="group-chat-modal">
+        <div class="group-chat-card">
+            <h3>Start group chat from this conversation</h3>
+            <p>Only this conversation will be shared. Your personal ChatGenius memory is always private.</p>
+
+            <button onclick="closeGroupChatModal()">Cancel</button>
+            <button onclick="confirmStartGroupChat()">Start group chat</button>
+        </div>
+    </div>
+
+    <script>
+        function openGroupChat() {
+            console.log("openGroupChat called");
+            const modal = document.getElementById("startGroupChatModal");
+            console.log("Modal element:", modal);
+            modal.style.display = "flex";
+        }
+
+        function closeGroupChatModal() {
+            console.log("closeGroupChatModal called");
+            const modal = document.getElementById("startGroupChatModal");
+            modal.style.display = "none";
+        }
+
+        function confirmStartGroupChat() {
+            console.log("confirmStartGroupChat called");
+            alert("Group chat started!");
+            closeGroupChatModal();
+        }
+    </script>
+</body>
+
+</html>

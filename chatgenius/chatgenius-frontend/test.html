@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatGenius - Quick Test</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            margin-top: 0;
+        }
+
+        input,
+        button {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+        }
+
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        button:hover {
+            background: #45a049;
+        }
+
+        #response {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f0f0f0;
+            border-radius: 8px;
+            min-height: 50px;
+            white-space: pre-wrap;
+        }
+
+        .status {
+            padding: 10px;
+            border-radius: 6px;
+            margin: 10px 0;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🤖 ChatGenius - Quick Test</h1>
+        <p>Test your Google Gemini AI connection</p>
+
+        <div id="status"></div>
+
+        <input type="text" id="messageInput" placeholder="Type your message here..."
+            value="Hello, introduce yourself in one sentence">
+        <button onclick="testAI()">Send to AI</button>
+
+        <div id="response"></div>
+    </div>
+
+    <script>
+        const API_URL = "http://localhost:5001";
+
+        async function testAI() {
+            const message = document.getElementById('messageInput').value;
+            const responseDiv = document.getElementById('response');
+            const statusDiv = document.getElementById('status');
+
+            if (!message.trim()) {
+                statusDiv.innerHTML = '<div class="status error">Please enter a message</div>';
+                return;
+            }
+
+            statusDiv.innerHTML = '<div class="status">Sending to Google Gemini AI...</div>';
+            responseDiv.textContent = 'Waiting for response...';
+
+            try {
+                const response = await fetch(`${API_URL}/ai/chat`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ message: message })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                const data = await response.json();
+
+                statusDiv.innerHTML = '<div class="status success">✓ Success! AI responded</div>';
+                responseDiv.textContent = data.reply || 'No response';
+
+            } catch (error) {
+                statusDiv.innerHTML = `<div class="status error">✗ Error: ${error.message}</div>`;
+                responseDiv.textContent = 'Failed to get response. Make sure the backend server is running on port 5001.';
+                console.error('Error:', error);
+            }
+        }
+
+        // Allow Enter key to send
+        document.getElementById('messageInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') testAI();
+        });
+    </script>
+</body>
+
+</html>

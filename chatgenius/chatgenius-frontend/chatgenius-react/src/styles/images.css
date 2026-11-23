@@ -1,0 +1,111 @@
+.images-page {
+  padding: 40px;
+  background: linear-gradient(to bottom, #f6d4e6, #ffffff);
+  min-height: 100vh;
+}
+
+.images-title {
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 25px;
+}
+
+/* Search Bar */
+.image-search-bar {
+  display: flex;
+  align-items: center;
+  background: white;
+  border-radius: 40px;
+  padding: 12px 20px;
+  width: 65%;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  margin-bottom: 40px;
+}
+
+.image-search-bar input {
+  border: none;
+  outline: none;
+  flex: 1;
+  font-size: 16px;
+  margin-left: 10px;
+}
+
+.right-icons {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.right-icons button {
+  background: #555;
+  color: white;
+  border-radius: 50%;
+  border: none;
+  width: 34px;
+  height: 34px;
+  cursor: pointer;
+}
+
+/* Sections */
+.section-title {
+  margin: 25px 0 15px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+/* Style scroll */
+.style-scroll {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+}
+
+.style-card {
+  min-width: 160px;
+  text-align: center;
+}
+
+.style-card img {
+  width: 160px;
+  height: 160px;
+  border-radius: 18px;
+  object-fit: cover;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.style-card img:hover {
+  transform: scale(1.05);
+}
+
+.style-card p {
+  margin-top: 8px;
+  font-size: 14px;
+}
+
+/* Discover grid */
+.discover-grid {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.discover-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: white;
+  padding: 12px 16px;
+  border-radius: 14px;
+  width: 320px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+  cursor: pointer;
+}
+
+.discover-card img {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  object-fit: cover;
+}

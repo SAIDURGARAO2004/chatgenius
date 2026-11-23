@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Group Chat Behavior - Visual Demo</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      max-width: 1000px;
+      margin: 50px auto;
+      padding: 20px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+    }
+    .container {
+      background: white;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    }
+    h1 {
+      color: #333;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    .subtitle {
+      text-align: center;
+      color: #666;
+      margin-bottom: 40px;
+    }
+    
+    .flow-container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin: 30px 0;
+    }
+    
+    .flow-step {
+      background: #f8f9fa;
+      padding: 25px;
+      border-radius: 12px;
+      border-left: 5px solid #4CAF50;
+      position: relative;
+    }
+    
+    .flow-step.fresh {
+      border-left-color: #2196F3;
+    }
+    
+    .flow-step.action {
+      border-left-color: #FF9800;
+    }
+    
+    .flow-step.result {
+      border-left-color: #4CAF50;
+    }
+    
+    .step-number {
+      position: absolute;
+      top: -15px;
+      left: 20px;
+      background: white;
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-weight: bold;
+      color: #4CAF50;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .flow-step h3 {
+      margin: 0 0 10px 0;
+      color: #333;
+      font-size: 18px;
+    }
+    
+    .flow-step p {
+      margin: 0;
+      color: #666;
+      line-height: 1.6;
+    }
+    
+    .arrow {
+      text-align: center;
+      font-size: 30px;
+      color: #999;
+      margin: -10px 0;
+    }
+    
+    .comparison {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin: 40px 0;
+    }
+    
+    .comparison-box {
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    
+    .comparison-box.before {
+      background: #ffebee;
+      border: 2px solid #f44336;
+    }
+    
+    .comparison-box.after {
+      background: #e8f5e9;
+      border: 2px solid #4CAF50;
+    }
+    
+    .comparison-box h2 {
+      margin-top: 0;
+      font-size: 20px;
+    }
+    
+    .comparison-box.before h2 {
+      color: #c62828;
+    }
+    
+    .comparison-box.after h2 {
+      color: #2e7d32;
+    }
+    
+    .comparison-box ul {
+      padding-left: 20px;
+    }
+    
+    .comparison-box li {
+      margin: 10px 0;
+      line-height: 1.6;
+    }
+    
+    .highlight {
+      background: #fff3cd;
+      padding: 20px;
+      border-radius: 8px;
+      border-left: 4px solid #ffc107;
+      margin: 30px 0;
+    }
+    
+    .highlight strong {
+      color: #f57c00;
+    }
+    
+    .demo-sidebar {
+      background: #2c3e50;
+      color: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin: 20px 0;
+      font-family: monospace;
+      font-size: 14px;
+    }
+    
+    .demo-sidebar .section {
+      margin: 15px 0;
+      padding: 10px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 4px;
+    }
+    
+    .demo-sidebar .hidden {
+      opacity: 0.3;
+      text-decoration: line-through;
+    }
+    
+    .demo-sidebar .visible {
+      background: rgba(76, 175, 80, 0.2);
+      border-left: 3px solid #4CAF50;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎯 Group Chat Section - ChatGPT Behavior</h1>
+    <p class="subtitle">Visual guide to the new group chat section behavior</p>
+
+    <div class="comparison">
+      <div class="comparison-box before">
+        <h2>❌ Before (Wrong)</h2>
+        <ul>
+          <li>GROUP CHATS section visible immediately</li>
+          <li>Shows even for fresh accounts</li>
+          <li>Appears when clicking "Group Chat" button</li>
+          <li>Confusing for new users</li>
+        </ul>
+      </div>
+      
+      <div class="comparison-box after">
+        <h2>✅ After (ChatGPT-Style)</h2>
+        <ul>
+          <li>Hidden by default for fresh accounts</li>
+          <li>Only appears after creating first group chat</li>
+          <li>Disappears when all group chats deleted</li>
+          <li>Clean, intuitive interface</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2 style="margin-top: 50px; text-align: center;">📋 User Flow for Fresh Account</h2>
+    
+    <div class="flow-container">
+      <div class="flow-step fresh">
+        <span class="step-number">1</span>
+        <h3>🔐 Login with Fresh Account</h3>
+        <p>User logs in with <code>newuser@gmail.com</code></p>
+        <div class="demo-sidebar">
+          <div class="section">📁 Settings</div>
+          <div class="section">✏️ New chat</div>
+          <div class="section hidden">👥 GROUP CHATS (HIDDEN)</div>
+          <div class="section visible">💬 Your chats</div>
+        </div>
+      </div>
+      
+      <div class="arrow">↓</div>
+      
+      <div class="flow-step action">
+        <span class="step-number">2</span>
+        <h3>👆 Click "Group Chat" Button</h3>
+        <p>User clicks the "👥 Group Chat" button in the header</p>
+        <p style="margin-top: 10px; color: #FF9800;"><strong>Result:</strong> Modal opens asking to start group chat</p>
+      </div>
+      
+      <div class="arrow">↓</div>
+      
+      <div class="flow-step action">
+        <span class="step-number">3</span>
+        <h3>✅ Confirm "Start group chat"</h3>
+        <p>User clicks "Start group chat" button in the modal</p>
+        <p style="margin-top: 10px; color: #FF9800;"><strong>Result:</strong> First group chat is created</p>
+      </div>
+      
+      <div class="arrow">↓</div>
+      
+      <div class="flow-step result">
+        <span class="step-number">4</span>
+        <h3>🎉 GROUP CHATS Section Appears!</h3>
+        <p>The GROUP CHATS section now becomes visible in the sidebar</p>
+        <div class="demo-sidebar">
+          <div class="section">📁 Settings</div>
+          <div class="section">✏️ New chat</div>
+          <div class="section visible">👥 GROUP CHATS<br>&nbsp;&nbsp;&nbsp;• Group Chat 1</div>
+          <div class="section">💬 Your chats</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight">
+      <strong>🔑 Key Point:</strong> The GROUP CHATS section only appears <strong>AFTER</strong> the user creates their first group chat, not when they just click the button. This matches ChatGPT's behavior exactly!
+    </div>
+
+    <h2 style="margin-top: 50px; text-align: center;">🔄 Additional Behaviors</h2>
+    
+    <div class="flow-container">
+      <div class="flow-step result">
+        <h3>📥 Existing User Login</h3>
+        <p>If you already have group chats, the section appears automatically when you log in</p>
+      </div>
+      
+      <div class="flow-step result">
+        <h3>🗑️ Delete All Group Chats</h3>
+        <p>When you delete your last group chat, the section automatically disappears (back to clean sidebar)</p>
+      </div>
+      
+      <div class="flow-step result">
+        <h3>👥 User Isolation</h3>
+        <p>Each user's group chats are separate. User A's group chats don't appear for User B</p>
+      </div>
+    </div>
+
+    <div style="background: #e3f2fd; padding: 25px; border-radius: 12px; margin-top: 40px; border-left: 5px solid #2196F3;">
+      <h3 style="margin-top: 0; color: #1565c0;">💡 How to Test</h3>
+      <ol style="line-height: 2;">
+        <li><strong>Clear browser cache</strong> or use incognito mode</li>
+        <li><strong>Login</strong> with a new email address</li>
+        <li><strong>Verify</strong> GROUP CHATS section is NOT visible</li>
+        <li><strong>Click</strong> "👥 Group Chat" button → modal opens</li>
+        <li><strong>Click</strong> "Start group chat" → section appears!</li>
+        <li><strong>Delete</strong> all group chats → section disappears!</li>
+      </ol>
+    </div>
+  </div>
+</body>
+</html>

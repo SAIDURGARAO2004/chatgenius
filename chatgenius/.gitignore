@@ -1,0 +1,17 @@
+.env
+.env.*
+!.env.example
+!.env.demo
+node_modules/
+venv/
+.venv/
+__pycache__/
+*.pyc
+dist/
+instance/
+*.db
+*.log
+.vscode/
+.DS_Store
+chatgenius-backend/uploads/*
+!chatgenius-backend/uploads/.gitkeep
